@@ -98,6 +98,38 @@ def parse_cli_args():
         default = False,
     )
 
+    parser.add_argument(
+        "--multithread", "-m",
+        dest = 'number_of_threads',
+        type = int,
+        action = "store",
+        help = "Perform multithreading for objects replacement in rulebases and groups with X threads (no value or 0: number of system's CPU)",
+        nargs = '?',
+        const = 0,
+    )
+
+    parser.add_argument(
+        "--ignore-appliances-opstate",
+        action = "extend",
+        type = str,
+        help = "List of appliances IP address for which opstate needs to be ignored (will not connect to get hitcounts)"
+    )
+
+    parser.add_argument(
+        "--unused-only",
+        action = "store_true",
+        help = "Only deletes unused objects. No replacements are realized",
+        default = False
+    )
+
+    parser.add_argument(
+        "--protect-tags",
+        nargs="+",
+        action="extend",
+        type=str,
+        help = "List of tags which will protect objects from deletion"
+    )
+
     return parser.parse_args()
 
 
@@ -125,4 +157,7 @@ def main():
 
 # entry point
 if __name__ == "__main__":
+    start = time.time()
     main()
+    end = time.time()
+    print(end - start)
